@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@fontsource/press-start-2p": "^5.3.0",
-    "@fontsource/vt323": "^5.3.0"
+    "@fontsource/vt323": "^5.3.0",
+    "@tari-project/ootle-wasm-bor": "0.48.0-rc.0"
   }
 }

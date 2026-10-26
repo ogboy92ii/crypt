@@ -1,6 +1,8 @@
 // The visitor's Tari wallet (Sapient, or any wallet behind window.tari) and the four transactions of
 // a real sale on esmeralda. See https://universe.tari.mw/integrations for the provider API.
 
+import { readable } from "./decode";
+
 export const XTM_RESOURCE = "resource_0101010101010101010101010101010101010101010101010101010101010101";
 export const NETWORK = "esmeralda";
 const MAX_FEE = "200000";
@@ -78,7 +80,7 @@ function provider(): Provider {
 
 async function call<T>(method: string, params?: unknown): Promise<T> {
   try {
-    return (await provider().request(params === undefined ? { method } : { method, params })) as T;
+    return (await readable(await provider().request(params === undefined ? { method } : { method, params }))) as T;
   } catch (e) {
     if (e instanceof WalletError) throw e;
     const err = e as { message?: string; code?: number };
