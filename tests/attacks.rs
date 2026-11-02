@@ -111,12 +111,12 @@ fn nothing_on_the_ledger_reveals_the_secret_and_no_account_appears_in_the_sale()
         BUYER_BOND,
         (LISTING_WINDOW, DELIVERY_WINDOW, DISPUTE_WINDOW),
     );
-    let result = run(&mut m, "list", tx);
-    let crypt = result
-        .finalize
-        .execution_results
+    run(&mut m, "list", tx);
+    let crypt = m
+        .test
+        .return_values()
         .iter()
-        .find_map(|r| r.decode::<ComponentAddress>().ok())
+        .find_map(|r| r.decoded::<ComponentAddress>().ok())
         .unwrap();
 
     let ctx = context(crypt);
