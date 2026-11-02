@@ -17,7 +17,7 @@ Built for the Tari Ootle "Spooky Secrets" showcase (October 2026).
 
 The template is published on the Tari Ootle testnet and two sales were played for real with the same client code (`onchain/`). Links go to [Veil](https://explorer.tari.mw), an independent Ootle explorer.
 
-* Template [`template_b7282faa09858bc1ca1257734d5e2739135c7ed29edec8a51d6b86d8225a61bf`](https://explorer.tari.mw/template/b7282faa09858bc1ca1257734d5e2739135c7ed29edec8a51d6b86d8225a61bf), [published](https://explorer.tari.mw/tx/6341ce51e6f1b31b694364dc4ec761dc780dccef294a03fadd65264f1530c7b2) from commit `320ffad`; `crypt.wasm` sha256 `9430bd57a58dc7a7be31972a57fff2de46fbfb9a39176f05118d4cedf0efe34b`.
+* Template [`template_ed8116a0633c05c27ec588ca2fcaa7b2b105c5caca52a77fc7b3453003496c82`](https://explorer.tari.mw/template/ed8116a0633c05c27ec588ca2fcaa7b2b105c5caca52a77fc7b3453003496c82), [published](https://explorer.tari.mw/tx/983bae990662462285f0d12564155f9d93a68612a821f65c0d834ae4bc7113b3) on 3 November 2026 (after the Ootle 0.49 testnet reset) from commit `7391d69`; CI's `crypt.wasm` sha256 `e00deb096b78edbfcfa590be99946b9c55c9b245d09de64fe15250b38b06e91d` (CI run 41544215753; the wallet daemon re-optimises the wasm before publishing, so the on-chain bytes differ slightly).
 
 | Sale | Transactions | Component |
 |---|---|---|
@@ -145,7 +145,7 @@ Anyone, once a window has passed: `claim_undelivered()`, `claim_uncontested()`.
 
 ## Layout
 
-* `src/lib.rs`: the template (`tari_template_lib` 0.34).
+* `src/lib.rs`: the template (`tari_template_lib` 0.37).
 * `core/`: `crypt_core`, the client side (keys, sealing, opening, the action proofs, the DLEQ proof, the
   payout digest) in `curve25519-dalek` + `sha2`.
 * `cli/`: the `crypt` binary.

@@ -3,10 +3,10 @@ import { expect, test, type Page } from "@playwright/test";
 const COMPONENT = `component_${"c".repeat(64)}`;
 const ACCOUNT = `component_${"a".repeat(64)}`;
 const VAULT = "d".repeat(64);
-// An account-like component as an Ootle 0.48 indexer serves it (CBOR, base64), holding vaults 11…11
-// and 12…12: tari-ootle crates/ootle_sdk_core/fixtures/substate_decode/component.json (0.47.0, 712409a).
+// An account as the Ootle 0.49 indexer serves it (CBOR, base64): a real esmeralda account substate
+// (3 Nov 2026) whose resource → vault map is replaced by two entries holding vaults 11…11 and 12…12.
 const CBOR_ACCOUNT =
-  "ggCBgoRYIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAggCAgqCCAYBBAIGC2IRYIBERERERERERERERERERERERERERERERERERERERERER2IRYIBISEhISEhISEhISEhISEhISEhISEhISEhISEhISEhIS";
+  "ggCBgoVYIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAggKBWCAa3z0Dx3Eceh2udKq3cwTadTD+bS7DeaGohKIU0Nx7DoKkZ2JhbGFuY2WCAIBnZGVwb3NpdIIAgGxnZXRfYmFsYW5jZXOCAIBxd2l0aGRyYXdfYXBwcm92ZWSCAICCAYBBK4IAgIGCotiDWCABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAdiEWCAREREREREREREREREREREREREREREREREREREREREREdiDWCACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAtiEWCASEhISEhISEhISEhISEhISEhISEhISEhISEhISEhISEqA=";
 
 // A stand-in for Sapient's window.tari: approves everything and records what the page asked for.
 async function fakeWallet(page: Page, opts: { network?: string; publicXtm?: string; reject?: boolean; cbor?: boolean } = {}): Promise<void> {
@@ -34,7 +34,7 @@ async function fakeWallet(page: Page, opts: { network?: string; publicXtm?: stri
             case "tari_submitTransactionRequest":
               return { transactionId: `${n}`.padStart(64, "0"), result: { upped: [ACCOUNT, COMPONENT] } };
             case "tari_getSubstate":
-              if (params?.substateId === COMPONENT) return { template_address: "b7282faa09858bc1ca1257734d5e2739135c7ed29edec8a51d6b86d8225a61bf" };
+              if (params?.substateId === COMPONENT) return { template_address: "ed8116a0633c05c27ec588ca2fcaa7b2b105c5caca52a77fc7b3453003496c82" };
               if (cbor) return { state: { up: { substate: CBOR_ACCOUNT } } };
               // The account's state, as the indexer gives it: its vault is CBOR tag 132.
               return { state: { up: { substate: { Component: { body: { state: [{ "@cbor": "map", entries: [[{ "@cbor": "tag", tag: 131, value: { "@cbor": "bytes", hex: "01".repeat(32) } }, { "@cbor": "tag", tag: 132, value: { "@cbor": "bytes", hex: VAULT } }]] }] } } } } } };
@@ -76,7 +76,7 @@ test("a full sale goes through the wallet, paid from the public balance", async 
   expect(ops[0].amount).toBe("3000000");
   expect(ops[0].relatedComponents).toEqual([`vault_${VAULT}`]);
   const list = ops[0].followUpInstructions![0].CallFunction;
-  expect(list.address).toBe("b7282faa09858bc1ca1257734d5e2739135c7ed29edec8a51d6b86d8225a61bf");
+  expect(list.address).toBe("ed8116a0633c05c27ec588ca2fcaa7b2b105c5caca52a77fc7b3453003496c82");
   expect(list.function).toBe("list");
   const la = list.args;
   expect(la).toHaveLength(10);
@@ -104,7 +104,7 @@ test("a full sale goes through the wallet, paid from the public balance", async 
   expect(ops[3].instructions![0].CallMethod.method).toBe("accept");
 });
 
-test("an account served as CBOR (Ootle 0.48 indexer) still declares its vaults", async ({ page }) => {
+test("an account served as CBOR (Ootle 0.49 indexer) still declares its vaults", async ({ page }) => {
   await fakeWallet(page, { cbor: true });
   await open(page);
   await page.getByRole("button", { name: "CONNECT WALLET" }).click();

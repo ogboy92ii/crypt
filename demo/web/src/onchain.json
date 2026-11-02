@@ -2,12 +2,12 @@
   "network": "esmeralda",
   "explorer": "https://explorer.tari.mw",
   "template": {
-    "address": "template_b7282faa09858bc1ca1257734d5e2739135c7ed29edec8a51d6b86d8225a61bf",
-    "url": "https://explorer.tari.mw/template/b7282faa09858bc1ca1257734d5e2739135c7ed29edec8a51d6b86d8225a61bf",
-    "sha256": "9430bd57a58dc7a7be31972a57fff2de46fbfb9a39176f05118d4cedf0efe34b",
-    "tx": "6341ce51e6f1b31b694364dc4ec761dc780dccef294a03fadd65264f1530c7b2",
-    "tx_url": "https://explorer.tari.mw/tx/6341ce51e6f1b31b694364dc4ec761dc780dccef294a03fadd65264f1530c7b2",
-    "commit": "320ffad"
+    "address": "template_ed8116a0633c05c27ec588ca2fcaa7b2b105c5caca52a77fc7b3453003496c82",
+    "url": "https://explorer.tari.mw/template/ed8116a0633c05c27ec588ca2fcaa7b2b105c5caca52a77fc7b3453003496c82",
+    "sha256": "e00deb096b78edbfcfa590be99946b9c55c9b245d09de64fe15250b38b06e91d",
+    "tx": "983bae990662462285f0d12564155f9d93a68612a821f65c0d834ae4bc7113b3",
+    "tx_url": "https://explorer.tari.mw/tx/983bae990662462285f0d12564155f9d93a68612a821f65c0d834ae4bc7113b3",
+    "commit": "7391d69"
   },
   "honest": {
     "component": "component_4e37f76b091bf0d5ea6560e2bb73adb08522dfd20ee3b13bd8e170e055733a8a",
