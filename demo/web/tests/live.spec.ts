@@ -102,6 +102,9 @@ test("a full sale goes through the wallet, paid from the public balance", async 
   expect(deliver.method).toBe("deliver");
   expect(deliver.args[3].Literal).toMatch(/^590140[0-9a-f]{640}$/);
   expect(ops[3].instructions![0].CallMethod.method).toBe("accept");
+  // Ootle 0.49 only finds substates a transaction declares: both calls name the sale's component.
+  expect(ops[2].relatedComponents).toEqual([COMPONENT]);
+  expect(ops[3].relatedComponents).toEqual([COMPONENT]);
 });
 
 test("an account served as CBOR (Ootle 0.49 indexer) still declares its vaults", async ({ page }) => {

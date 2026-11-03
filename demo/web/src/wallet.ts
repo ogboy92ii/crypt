@@ -189,13 +189,25 @@ export async function buy(component: string, a: BuyArgs, onWaiting: (note: strin
 
 export async function deliver(component: string, a: DeliverArgs, onWaiting: (note: string) => void): Promise<string> {
   const args = [bytes(a.ephemeral), bytes(a.ephemeral_proof.c), bytes(a.ephemeral_proof.z), bytes(a.ciphertext), bytes(a.proof.c), bytes(a.proof.z)];
-  return (await transact({ kind: "instructions", instructions: [method(component, "deliver", args)], maxFee: MAX_FEE }, onWaiting)).id;
+  return (await transact(onComponent(component, "deliver", args), onWaiting)).id;
 }
 
 export async function accept(component: string, proof: ProofHex, onWaiting: (note: string) => void): Promise<string> {
   const args = [bytes(proof.c), bytes(proof.z)];
-  return (await transact({ kind: "instructions", instructions: [method(component, "accept", args)], maxFee: MAX_FEE }, onWaiting)).id;
+  return (await transact(onComponent(component, "accept", args), onWaiting)).id;
 }
+
+/**
+ * One call on the sale's component, the component declared as an input. From Ootle 0.49 the
+ * network no longer finds a substate the transaction does not declare: on esmeralda (3 Nov 2026)
+ * a deliver without it settled fee-only with SubstateNotFound (tx 9d1bb855…de3c).
+ */
+const onComponent = (component: string, name: string, args: unknown[]) => ({
+  kind: "instructions",
+  instructions: [method(component, name, args)],
+  relatedComponents: [component],
+  maxFee: MAX_FEE,
+});
 
 /**
  * The Crypt component `list` created. Every component id the result mentions is a candidate; the
