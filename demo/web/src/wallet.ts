@@ -205,6 +205,9 @@ export async function accept(component: string, proof: ProofHex, onWaiting: (not
 const onComponent = (component: string, name: string, args: unknown[]) => ({
   kind: "instructions",
   instructions: [method(component, name, args)],
+  // `inputs` is what Sapient documents for this kind (kept alongside relatedComponents, which held
+  // with a public fee; the private-fee case is still to be confirmed).
+  inputs: [{ substate_id: component, version: null }],
   relatedComponents: [component],
   maxFee: MAX_FEE,
 });
