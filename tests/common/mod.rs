@@ -277,12 +277,11 @@ impl Market {
             BUYER_BOND,
             (LISTING_WINDOW, DELIVERY_WINDOW, DISPUTE_WINDOW),
         );
-        let result = self.test.execute_expect_success(tx, vec![]);
-        result
-            .finalize
-            .execution_results
+        self.test.execute_expect_success(tx, vec![]);
+        self.test
+            .return_values()
             .iter()
-            .find_map(|r| r.decode::<ComponentAddress>().ok())
+            .find_map(|r| r.decoded::<ComponentAddress>().ok())
             .expect("list returns the component address")
     }
 

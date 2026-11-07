@@ -1,5 +1,5 @@
 //! Converts the burn proof a Minotari (L1) wallet writes into the Ootle claim proof, exactly as the
-//! Ootle wallet daemon does. Copied from tari-ootle v0.46.1,
+//! Ootle wallet daemon does. Copied from tari-ootle v0.49.2,
 //! `applications/tari_ootle_app_utilities/src/burn_claim_proof.rs` (BSD-3-Clause), which is not
 //! published on crates.io.
 
@@ -7,12 +7,11 @@
 //   SPDX-License-Identifier: BSD-3-Clause
 
 use ootle_byte_type::ToByteType;
-use tari_common_types::burn_proof::{BurnOutputProof, MmrInclusionProof};
 use tari_engine_types::confidential::{
     BurnOutput, BurnOutputFeatures, BurnOutputInclusionProof, BurnSidechainId, MinotariBurnClaimProof,
     MmrInclusionProof as ClaimMmrInclusionProof,
 };
-use tari_sidechain::BurnClaimProof;
+use tari_sidechain::{BurnClaimProof, BurnOutputProof, MmrInclusionProof};
 use tari_template_lib_types::Hash32;
 use tari_transaction_components::transaction_components::{OutputFeatures, OutputType, SideChainFeatureData};
 
@@ -83,7 +82,7 @@ fn bytes<const N: usize>(field: &str, bytes: Vec<u8>) -> Result<bounded_vec::Bou
 }
 
 fn mmr_proof(proof: &MmrInclusionProof) -> ClaimMmrInclusionProof {
-    let hashes = |hashes: &[tari_common_types::types::FixedHash]| {
+    let hashes = |hashes: &[tari_sidechain::FixedHash]| {
         hashes
             .iter()
             .map(|hash| Hash32::from_array(hash.into_array()))

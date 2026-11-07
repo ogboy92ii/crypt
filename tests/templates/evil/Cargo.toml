@@ -10,7 +10,7 @@ license = "BSD-3-Clause"
 publish = false
 
 [dependencies]
-tari_template_lib = "0.34.0"
+tari_template_lib = "0.38.0"
 
 [lib]
 crate-type = ["cdylib"]
@@ -23,4 +23,4 @@ panic = "abort"
 strip = true
 
 [build-dependencies]
-tari_ootle_template_build = "0.11"
+tari_ootle_template_build = "0.18"

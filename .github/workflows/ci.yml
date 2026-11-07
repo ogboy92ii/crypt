@@ -51,6 +51,16 @@ jobs:
         run: cargo clippy -p crypt --release --target wasm32-unknown-unknown --locked -- -D warnings
       - name: Report the artefact size
         run: ls -l target/wasm32-unknown-unknown/release/crypt.wasm
+      - name: Hash the template that gets published
+        run: cd target/wasm32-unknown-unknown/release && sha256sum crypt.wasm | tee crypt.wasm.sha256
+      # Publish exactly the wasm this run built and tested (actions/upload-artifact v4, pinned).
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: crypt-${{ github.sha }}
+          path: |
+            target/wasm32-unknown-unknown/release/crypt.wasm
+            target/wasm32-unknown-unknown/release/crypt.wasm.sha256
+          if-no-files-found: error
       - name: Build the demo engine for the browser
         run: cargo build -p crypt_wasm --release --target wasm32-unknown-unknown --locked
       - name: Lint the demo engine for the browser

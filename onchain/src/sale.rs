@@ -268,7 +268,9 @@ pub async fn utxo_from_claim(p: &mut Prov, tx_id: &str, value: u64) {
         .get_transaction_receipt(id.into_receipt_address())
         .await
         .expect("claim receipt")
-        .receipt;
+        .receipt
+        .decode()
+        .expect("decode the claim receipt");
     let utxos: Vec<_> = receipt
         .diff_summary
         .upped
